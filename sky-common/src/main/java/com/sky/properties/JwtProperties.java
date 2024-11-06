@@ -28,4 +28,5 @@ public class JwtProperties {
     private long userTtl;
 
 
+
 }

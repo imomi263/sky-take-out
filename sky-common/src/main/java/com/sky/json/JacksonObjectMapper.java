@@ -26,7 +26,8 @@ public class JacksonObjectMapper extends ObjectMapper {
         this.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         // 反序列化的时候，属性不存在的兼容
         // 不存在的属性就忽略
-        this.getDeserializationConfig().withoutFeatures(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        this.getDeserializationConfig()
+                .withoutFeatures(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         // 添加上三种时间格式的对应的序列化器和反序列化器
         SimpleModule simpleModule = new SimpleModule()
@@ -38,12 +39,6 @@ public class JacksonObjectMapper extends ObjectMapper {
                 .addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_TIME_FORMAT)));
 
         this.registerModule(simpleModule);
-
-
-
-
-
-
 
 
 

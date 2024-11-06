@@ -14,21 +14,22 @@ public class Result<T> implements Serializable {
 
     public static <T> Result<T> success() {
         Result<T> result = new Result<T>();
-        result.setCode(0);
-        result.msg = null;
+        result.setCode(1);
+        result.msg = "success";
         return result;
     }
 
     public static <T> Result<T> success(T data) {
         Result<T> result = new Result<T>();
+        result.msg = "success";
         result.data=data;
-        result.code=0;
+        result.code=1;
         return result;
     }
     public static <T> Result<T> error(String msg) {
         Result<T> result = new Result<T>();
         result.msg = msg;
-        result.code=1;
+        result.code=0;
         return result;
     }
 }

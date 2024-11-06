@@ -3,13 +3,13 @@ package com.sky.context;
 public class BaseContext {
 
     // 提供了线程局部变量
-    public static ThreadLocal<Integer> threadLocal=new ThreadLocal<>();
+    public static ThreadLocal<Long> threadLocal=new ThreadLocal<>();
 
-    public static void setCurrentId(Integer id) {
+    public static void setCurrentId(Long id) {
         threadLocal.set(id);
     }
 
-    public static Integer getCurrentId() {
+    public static Long getCurrentId() {
         return threadLocal.get();
     }
 

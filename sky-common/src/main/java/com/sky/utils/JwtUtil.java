@@ -31,7 +31,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .signWith( signatureAlgorithm, secretKey.getBytes(StandardCharsets.UTF_8))
                 .setExpiration(exp);
-        //compact() 方法是 jjwt 库中的 JwtBuilder 类的一个方法，用于生成最终的 JWT 字符串。
+        //compact() 方法是 jwt 库中的 JwtBuilder 类的一个方法，用于生成最终的 JWT 字符串。
         //这个方法会将你之前设置的所有参数（如头部、载荷和签名）组合成一个完整的 JWT 字符串，并返回这个字符串。
         return builder.compact();
 
