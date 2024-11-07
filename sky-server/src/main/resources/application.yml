@@ -1,0 +1,82 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sky_take_out
+    username: imomi
+    password: 123456
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.sky.entity
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com:
+      sky:
+        mapper: debug
+        service: info
+        controller: info
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.xiaominfo.knife4j.demo.web
+
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true    #开启knife4j,无需添加@EnableKnife4j注解
+  setting:
+    enable-dynamic-parameter: true #动态参数
+    language: zh_cn   #中文
+    swagger-model-name: 实体列表   #默认为：Swagger Models
+    enable-request-cache: true
+  #开启Swagger的Basic认证功能,默认是false,开启后访问文档页面时会弹出用户名和密码输入框
+  basic:
+    enable: false
+    # Basic认证用户名
+    username: user
+    # Basic认证密码
+    password: 123456
+
+
+sky:
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    admin-secret-key: itcast
+    # 设置jwt过期时间
+    admin-ttl: 7200000
+    # 设置前端传递过来的令牌名称
+    admin-token-name: token
+  alioss:
+    access-key-id: 1
+    endpoint: 1
+    access-key-secret: 1
+    bucket-name: 1
+
+login-reg:
+  jwt:
+    employeeSecretKey: cyh_handsome
+    employTtl: 864000000
+    employeeTokenName: Authorization
+    userSecretKey: user_handsome
+    userTtl: 864000000
+    userTokenName: Authorization
+
