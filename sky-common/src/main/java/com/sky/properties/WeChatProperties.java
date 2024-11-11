@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Data
-@ConfigurationProperties(prefix = "wechat")
+@ConfigurationProperties(prefix = "sky.wechat")
 public class WeChatProperties {
     private String appId; //小程序的appid
     private String secret; //小程序的秘钥

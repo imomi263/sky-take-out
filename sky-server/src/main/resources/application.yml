@@ -11,6 +11,11 @@ spring:
     url: jdbc:mysql://localhost:3306/sky_take_out
     username: imomi
     password: 123456
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
 
 mybatis:
   #mapper配置文件
@@ -65,11 +70,18 @@ sky:
     admin-ttl: 7200000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+    user-secret-key: itcast
+    user-ttl: 720000
+    user-token-name: Authorization
+
   alioss:
     access-key-id: 1
     endpoint: 1
     access-key-secret: 1
     bucket-name: 1
+  wechat:
+    appid: 1111
+    secret: 1111
 
 login-reg:
   jwt:

@@ -34,7 +34,7 @@ public class Dish implements Serializable {
     //图片
     private String image;
 
-    private List<DishFlavor> flavors;
+    //private List<DishFlavor> flavors;
 
     //描述信息
     private String description;
