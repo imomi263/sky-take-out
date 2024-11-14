@@ -16,14 +16,15 @@ import java.util.List;
 @NoArgsConstructor
 public class SetmealDTO implements Serializable {
 
-    private Integer id;
+    private Long id;
     private String name;
-    private String pic;
-    private String detail;
+    private String image;
+    private String description;
     private BigDecimal price;
-    private String status;
-    private Integer categoryId;
+    private Integer status;
+    private Long categoryId;
     // 当前套餐包含的多种菜品
     private List<SetmealDish> setmealDishes = new ArrayList<>();
+
 
 }

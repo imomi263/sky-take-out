@@ -11,6 +11,7 @@ import com.sky.entity.DishFlavor;
 import com.sky.exception.DeleteNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetMealDishMapper;
 import com.sky.mapper.SetMealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
@@ -38,6 +39,8 @@ public class DishServiceImpl implements DishService {
 
     @Resource
     private SetMealMapper setMealMapper;
+    @Autowired
+    private SetMealDishMapper setMealDishMapper;
 
     @Override
     @Transactional // 要么全失败要么全成功
@@ -56,13 +59,14 @@ public class DishServiceImpl implements DishService {
         List<DishFlavor> flavors=dishDTO.getFlavors();
         log.info("新增品味：{}",flavors);
 
-        if(flavors!=null && !flavors.isEmpty()){
-            flavors.forEach(flavor->{
-               flavor.setDishId(dishId);
+        if(flavors!=null && !flavors.isEmpty()) {
+            flavors.forEach(flavor -> {
+                flavor.setDishId(dishId);
             });
+        }
             // 向口味表插入n条数据
             dishFlavorMapper.insertBatch(flavors);
-        }
+
     }
 
     @Override
@@ -86,7 +90,7 @@ public class DishServiceImpl implements DishService {
         }
 
         // 判断当前菜品是否能删除--是否菜品被套餐关联
-        List<Long> setmealIds=setMealMapper.getSetMealIdsByCategoryId(ids);
+        List<Long> setmealIds=setMealDishMapper.getSetMealIdsByCategoryId(ids);
         if(setmealIds!=null && !setmealIds.isEmpty()){
             // 当前菜品被关联了
             throw new DeleteNotAllowedException(

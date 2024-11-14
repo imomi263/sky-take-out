@@ -23,7 +23,7 @@ import java.util.Map;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    public static final String WX_LOGIN="https://api.weixin.qq.com/sns/jscode2session";
+    private static final String WX_LOGIN="https://api.weixin.qq.com/sns/jscode2session";
 
     @Resource
     private WeChatProperties WeChatProperties;

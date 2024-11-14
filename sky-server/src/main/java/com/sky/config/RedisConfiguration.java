@@ -13,6 +13,7 @@ public class RedisConfiguration {
 
     @Bean
     public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        log.info("redis start");
         RedisTemplate redisTemplate = new RedisTemplate();
         // 设置redis的连接工厂
         redisTemplate.setConnectionFactory(redisConnectionFactory);

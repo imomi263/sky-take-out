@@ -12,11 +12,11 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class SetmealDish implements Serializable {
 
-    private Integer id;
+    private Long id;
     private String name;
     private BigDecimal price;
     private Integer copies;
-    private Integer setmealId;
-    private Integer dishId;
+    private Long setmealId;
+    private Long dishId;
 }
 

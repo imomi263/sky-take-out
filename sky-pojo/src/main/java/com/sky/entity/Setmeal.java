@@ -13,15 +13,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Setmeal implements Serializable {
 
-    private Integer id;
+    private Long id;
     private String name;
-    private String pic;
-    private String detail;
+    private String image;
+    private String description;
     private BigDecimal price;
     private Integer status;
-    private Integer categoryId;
-    private Integer createUser;
-    private Integer updateUser;
+    private Long categoryId;
+    private Long createUser;
+    private Long updateUser;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }

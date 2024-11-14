@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 public class OrderSubmitDTO implements Serializable {
 
-    private Integer addressId; // 地址簿id
+    private Long addressId; // 地址簿id
     private int payMethod; // 付款方式
     private String remark; // 备注
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
