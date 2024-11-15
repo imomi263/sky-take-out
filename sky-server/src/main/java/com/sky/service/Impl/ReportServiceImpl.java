@@ -1,10 +1,12 @@
 package com.sky.service.Impl;
 
+import com.sky.dto.GoodsSalesDTO;
 import com.sky.entity.Orders;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
 import com.sky.vo.OrderReportVO;
+import com.sky.vo.SalesTop10ReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 import io.netty.util.internal.StringUtil;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -114,6 +118,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public OrderReportVO getOrderStatistics(LocalDate begin, LocalDate end) {
+
         List<LocalDate> dateList=new ArrayList<>();
         dateList.add(begin);
         while(!begin.equals(end)) {
@@ -128,6 +133,7 @@ public class ReportServiceImpl implements ReportService {
 
             LocalDateTime beginTime=LocalDateTime.of(date, LocalTime.MIN);
             LocalDateTime endTime=LocalDateTime.of(date, LocalTime.MAX);
+
             Map map=new HashMap();
             map.put("begin",beginTime);
             map.put("end",endTime);
@@ -164,6 +170,24 @@ public class ReportServiceImpl implements ReportService {
                 .validOrderCountList(StringUtils.join(validOrderListCount,","))
                 .validOrderCount(totalValidOrderCount)
                 .orderCompletionRate(orderCompletionRate)
+                .build();
+
+    }
+
+    @Override
+    public SalesTop10ReportVO getTop10(LocalDate begin, LocalDate end) {
+        LocalDateTime beginTime=LocalDateTime.of(begin, LocalTime.MIN);
+        LocalDateTime endTime=LocalDateTime.of(end, LocalTime.MAX);
+
+        List<GoodsSalesDTO> goodsSalesDTOList=orderMapper.getSalesTop10(beginTime,endTime);
+
+        List<String> names = goodsSalesDTOList.stream().map(GoodsSalesDTO::getName).collect(Collectors.toList());
+
+        List<Integer> numbers = goodsSalesDTOList.stream().map(GoodsSalesDTO::getNumber).collect(Collectors.toList());
+
+        return SalesTop10ReportVO.builder()
+                .nameList(StringUtils.join(names,","))
+                .numberList(StringUtils.join(numbers,","))
                 .build();
 
     }
