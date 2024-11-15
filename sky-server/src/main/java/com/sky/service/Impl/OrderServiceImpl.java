@@ -166,4 +166,21 @@ public class OrderServiceImpl implements OrderService {
 
         webSocketServer.sendToAllClient(json);
     }
+
+    @Override
+    public void reminder(Long id) {
+        Orders ordersDB=orderMapper.getById(id);
+
+        if(ordersDB==null){
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        Map map=new HashMap();
+        map.put("type",2);
+        map.put("orderId",id);
+        map.put("content","订单号"+ordersDB.getNumber());
+
+        // 通过websocket推送到浏览器
+        webSocketServer.sendToAllClient(JSON.toJSONString(map));
+
+    }
 }
