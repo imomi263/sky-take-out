@@ -4,8 +4,8 @@
 <mapper namespace="com.sky.mapper.UserMapper">
 
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
-        insert into user (openid,name,phone,sex,id_number,avator,create_time)
-        values(#{openid},#{name},#{phone},#{sex},#{idNumber},#{avator} ,#{createTime}  )
+        insert into user (openid,name,phone,sex,id_number,avatar,create_time)
+        values(#{openid},#{name},#{phone},#{sex},#{idNumber},#{avatar} ,#{createTime}  )
     </insert>
 <!--    useGeneratedKeys="true"：这个属性告诉数据库驱动程序，-->
 <!--    应用程序希望在执行插入操作后获取自动生成的键（通常是主键）。-->
@@ -13,5 +13,18 @@
 <!--    即数据库自动为每个新插入的记录生成一个唯一的ID。-->
 <!--    keyProperty="id"：这个属性指定了Java对象中的属性名，-->
 <!--    该属性将用来接收数据库生成的主键值。-->
+
+    <select id="countByMap" resultType="java.lang.Integer">
+        select count(id) from user
+        <where>
+            <if test="begin !=null">
+                and create_time &gt;  #{begin}
+            </if>
+            <if test="end !=null">
+                and create_time &lt;  #{end}
+            </if>
+
+        </where>
+    </select>
 
 </mapper>
