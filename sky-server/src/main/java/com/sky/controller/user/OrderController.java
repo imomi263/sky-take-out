@@ -28,7 +28,7 @@ public class OrderController {
 
     @PutMapping("/payment")
     @Operation(summary = "订单支付")
-    public Result<OrderPaymentVO> payment(@RequestBody OrderPaymentDTO orderPaymentDTO) {
+    public Result<OrderPaymentVO> payment(@RequestBody OrderPaymentDTO orderPaymentDTO) throws Exception {
         OrderPaymentVO orderPaymentVO=orderService.payment(orderPaymentDTO);
         return Result.success(orderPaymentVO);
     }
