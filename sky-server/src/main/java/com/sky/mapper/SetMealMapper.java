@@ -14,6 +14,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SetMealMapper {
@@ -55,4 +56,6 @@ public interface SetMealMapper {
 
     @AutoFill(OperationType.UPDATE)
     void update(Setmeal setmeal);
+
+    Integer countByMap(Map map);
 }

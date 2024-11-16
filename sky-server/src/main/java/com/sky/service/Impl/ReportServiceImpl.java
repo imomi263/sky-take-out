@@ -5,17 +5,21 @@ import com.sky.entity.Orders;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
-import com.sky.vo.OrderReportVO;
-import com.sky.vo.SalesTop10ReportVO;
-import com.sky.vo.TurnoverReportVO;
-import com.sky.vo.UserReportVO;
+import com.sky.service.WorkspaceService;
+import com.sky.vo.*;
 import io.netty.util.internal.StringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -36,6 +40,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private WorkspaceService workspaceService;
 
     /**
      * @param begin
@@ -189,6 +196,75 @@ public class ReportServiceImpl implements ReportService {
                 .nameList(StringUtils.join(names,","))
                 .numberList(StringUtils.join(numbers,","))
                 .build();
+
+    }
+
+    @Override
+    public void exportBusinessData(HttpServletResponse response) throws IOException {
+        // 查询数据库，获取近30天营业数据
+        LocalDate dateBegin = LocalDate.now().minusDays(30);
+
+        LocalDate dateEnd = LocalDate.now().minusDays(1);
+
+
+        BusinessDataVO businessData = workspaceService.getBusinessData(LocalDateTime.of(dateBegin, LocalTime.MIN),
+                LocalDateTime.of(dateEnd, LocalTime.MAX));
+
+        // 从类路径下读取资源，返回输入流对象
+
+        // 基于模板文件创建一个新的Excel文件
+        XSSFWorkbook excelWorkbook = new XSSFWorkbook(
+                this.getClass().getClassLoader().
+                        getResourceAsStream("template/template.xlsx")
+        );
+
+        // 获取表格的标签页
+
+        XSSFSheet sheet1 = excelWorkbook.getSheet("Sheet1");
+
+
+        // 填充数据时间段
+        sheet1.getRow(1).getCell(1)
+                .setCellValue("时间"+dateBegin+"至"+dateEnd);
+
+        // 获得第4行
+        XSSFRow row = sheet1.getRow(3);
+        row.getCell(2).setCellValue(businessData.getTurnover());
+        row.getCell(4).setCellValue(businessData.getOrderCompletionRate());
+        row.getCell(6).setCellValue(businessData.getNewUsers());
+
+
+        row = sheet1.getRow(4);
+        row.getCell(2).setCellValue(businessData.getValidOrderCount());
+        row.getCell(4).setCellValue(businessData.getUnitPrice());
+
+
+        // 填充明细数据
+        for(int i=0;i<30;i++){
+            LocalDate date=dateBegin.plusDays(i);
+            businessData = workspaceService.getBusinessData(
+                    LocalDateTime.of(date, LocalTime.MIN)
+                    , LocalDateTime.of(date, LocalTime.MAX)
+            );
+
+            row=sheet1.getRow(7+i);
+            row.getCell(1).setCellValue(date.toString());
+            row.getCell(2).setCellValue(businessData.getTurnover());
+            row.getCell(3).setCellValue(businessData.getValidOrderCount());
+            row.getCell(4).setCellValue(businessData.getOrderCompletionRate());
+            row.getCell(5).setCellValue(businessData.getUnitPrice());
+            row.getCell(6).setCellValue(businessData.getNewUsers());
+        }
+
+        // 通过输出流将Excel文件下载到浏览器
+        ServletOutputStream outputStream = response.getOutputStream();
+        excelWorkbook.write(outputStream);
+
+
+        // 调试的时候把下载的文件后缀重命名为xlsx就可以正常打开了
+        outputStream.close();
+        excelWorkbook.close();
+
 
     }
 
